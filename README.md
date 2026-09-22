@@ -1,17 +1,17 @@
 # Rune
 
-The governance policy language. A policy compiles to the objects that already
-decide what an agent may do and what it may ship.
+policy language. compiles down to the two objects that already decide what an
+agent can do and what it can ship.
 
-Part of the [Kinode](../kinode-stack) stack.
+part of [kinode](../kinode-stack).
 
-## Install
+## install
 
 ```sh
 pip install -e .
 ```
 
-## A policy
+## example
 
 ```rune
 module lending.governance
@@ -41,33 +41,32 @@ policy underwriting_maintenance {
 }
 ```
 
-## Why it is a separate language
+## separation
 
-The people who decide what an autonomous agent may change are usually not the
-people writing the code it changes, and a policy that lives inside the codebase
-it governs can be edited by whatever is editing that codebase. Keeping it
-separate makes a policy change a distinct artifact with its own review path and
-its own audit trail.
+it is a separate language on purpose. the people deciding what an agent is
+allowed to change are usually not the people writing the code it changes, and a
+policy sitting inside the codebase it governs can be edited by whatever is
+editing that codebase. keeping it out means a policy change is its own thing
+with its own review on it
 
-## What a policy becomes
+## output
 
-Two objects, both already load-bearing elsewhere:
+two objects, both of them already doing work elsewhere
 
 ```python
-policy.install(broker)              # capability grants — what it may do
-policy.to_authorization("INT-1")    # authorisation — what it may ship
+policy.install(broker)              # grants, what it can do
+policy.to_authorization("INT-1")    # authorisation, what it can ship
 policy.budget()                     # token and spend ceilings
 ```
 
-It is therefore enforced by construction. There is no way to run under a policy
-while ignoring it:
+so there is no way to run under a policy and ignore it at the same time
 
 ```
 ok  a policy that denies money stops the workflow at the ledger:
     bureau.pull permitted, ledger.append refused at the boundary
 ```
 
-And at promotion time:
+and at promotion time
 
 ```
 decision: BLOCK
@@ -75,34 +74,30 @@ decision: BLOCK
           outside the authorised scope
 ```
 
-## Rules
+## rules
 
-**Denials beat grants**, always. A policy that both grants and denies the same
-operation is a compile error rather than a precedence puzzle — a rule that can
-never take effect is almost always a mistake in the policy.
+denials beat grants. if you grant and deny the same thing you get a compile
+error rather than a precedence puzzle, since a rule that can never fire is
+nearly always a mistake somebody made in the policy
 
-**Omission is refusal.** Nothing is permitted that was not granted.
+anything you did not grant is refused
 
-**A stated promotion condition is a hard requirement**, applied whatever the
-gate concluded on its own. Escalating a change that fails a condition the
-policy says must hold would put a human in front of a decision the policy
-already made.
+a promotion condition you wrote is hard, it applies whatever the gate worked out
+on its own. otherwise you end up putting a human in front of a question the
+policy already answered
 
-Reported: wildcard grants, a policy that grants nothing, a policy with no
-promotion conditions, and a policy with no blast-radius limit.
+you get flagged for wildcard grants, a policy that grants nothing, no promotion
+conditions, and no blast radius limit
 
-## Vocabulary
+## vocabulary
 
-**Approval triggers** — `new_capabilities`, `contracts_change`,
-`signature_change`, `behaviour_change`, `classification_increase`,
-`intent_change`, `always`.
+| kind | values |
+| --- | --- |
+| approval triggers | `new_capabilities`, `contracts_change`, `signature_change`, `behaviour_change`, `classification_increase`, `intent_change`, `always` |
+| promotion conditions | `verified`, `not_diverged`, `tests_pass`, `in_scope`, `within_blast_radius` |
+| limits | `blast_radius`, `calls`, `money`, `tokens`, `classification` |
 
-**Promotion conditions** — `verified`, `not_diverged`, `tests_pass`,
-`in_scope`, `within_blast_radius`.
-
-**Limits** — `blast_radius`, `calls`, `money`, `tokens`, `classification`.
-
-## Usage
+## usage
 
 ```python
 from rune import parse_rune, evaluate
@@ -118,15 +113,15 @@ decision = evaluate(policy, diff, verification=report, differential_report=diff_
 print(decision.render())
 ```
 
-Policies also lower to a hashed Canon constant, so a policy change appears in
-the same graph queries and audit records as a change to code.
+policies also lower to a hashed canon constant, so changing a policy turns up in
+the same graph queries and the same audit records as changing code does
 
-## Tests
+## tests
 
 ```sh
 python tests/smoke_rune.py
 ```
 
-## Licence
+## licence
 
-Apache-2.0. Copyright Kinode.
+Apache-2.0, Kinode.

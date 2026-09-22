@@ -1,25 +1,22 @@
 """
-Rune: the governance policy language.
+rune, the policy language.
 
-Rune is deliberately a separate language from the ones engineers write in. The
-people who decide what an autonomous agent may change are usually not the
-people writing the code it changes, and a policy that lives inside the codebase
-it governs can be edited by whatever is editing that codebase. Keeping it
-separate means a policy change is a distinct artifact with its own review path
-and its own audit trail.
+it is a separate language from the ones engineers write in on purpose. the
+people deciding what an agent is allowed to change are usually not the people
+writing the code it changes, and a policy sitting inside the codebase it
+governs can be edited by whatever is editing that codebase. keeping it out
+means a policy change is its own artifact with its own review and its own audit
+trail.
 
-A policy compiles to two things that are already load-bearing elsewhere:
+a policy compiles into two things that are already doing work somewhere else,
+capability grants for the broker which decide what an agent can do while it is
+running, and an authorisation for the gate which decides what it can ship.
 
-  * capability grants for the broker, which decide what an agent may do at
-    runtime, and
-  * an authorisation for the promotion gate, which decides what an agent may
-    ship.
+so a policy is not advice. it is the object both enforcement points read, and
+there is no way to run under one and ignore it at the same time.
 
-So a policy is not advice. It is the object both enforcement points consult,
-and there is no way to run under a policy while ignoring it.
-
-Denials beat grants, always, and a policy that both grants and denies the same
-operation is a compile error rather than a precedence puzzle.
+denials beat grants, and granting plus denying the same operation is a compile
+error rather than a precedence puzzle somebody has to work out.
 """
 
 from __future__ import annotations

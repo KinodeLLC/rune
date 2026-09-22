@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "rune"
 version = "0.1.0"
-description = "Rune: the governance policy language. Capability grants, blast radius limits and promotion policy, evaluated by the broker."
+description = "policy language. compiles into capability grants and a promotion authorisation."
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "Apache-2.0" }

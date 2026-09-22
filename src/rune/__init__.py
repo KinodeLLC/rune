@@ -1,13 +1,13 @@
 """
-Rune: the governance policy language.
+rune, the policy language.
 
-A policy compiles to capability grants for the broker and an authorisation for
-the promotion gate - the two objects that already decide what an agent may do
-and what it may ship. A policy is therefore enforced by construction rather
-than consulted by convention.
+a policy compiles into capability grants for the broker and an authorisation
+for the gate, which are the two objects already deciding what an agent can do
+and what it can ship, so it gets enforced by construction rather than consulted
+by convention.
 
-Kept a separate language from the code it governs, so a policy change is its
-own artifact with its own review path.
+kept out of the code it governs so a policy change is its own thing with its
+own review.
 """
 
 __version__ = "0.1.0"
