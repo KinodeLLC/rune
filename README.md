@@ -3,7 +3,7 @@
 policy language. compiles down to the two objects that already decide what an
 agent can do and what it can ship.
 
-part of [kinode](../kinode-stack).
+part of [kinode](https://github.com/KinodeLLC/kinode-stack).
 
 ## install
 
